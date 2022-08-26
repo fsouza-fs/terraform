@@ -1,12 +1,20 @@
 provider "aws" {
   region = "us-east-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
+  profile = "default"
+}
+
+resource "tls_private_key" "generated-ssh-key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "my-ssh-key" {
   key_name   = "my-ssh-key"
-  public_key = var.ssh_key
+  public_key = tls_private_key.generated-ssh-key.public_key_openssh
+
+  provisioner "local-exec" { # Create "myKey.pem" to your computer!!
+    command = "echo '${tls_private_key.generated-ssh-key.private_key_pem}' > ./myKey.pem && chmod +400 ./myKey.pem"
+  }
 }
 
 module "SecurityGroup" {

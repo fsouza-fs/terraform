@@ -1,5 +1,5 @@
-resource "aws_security_group" "webjenkins" {
-  name = "webjenkins"
+resource "aws_security_group" "webubuntu" {
+  name = "webubuntu"
   ingress {
     description = "http"
     from_port   = 80
