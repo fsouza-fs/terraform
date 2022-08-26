@@ -12,7 +12,7 @@ resource "aws_key_pair" "my-ssh-key" {
   key_name   = "my-ssh-key"
   public_key = tls_private_key.generated-ssh-key.public_key_openssh
 
-  provisioner "local-exec" { # Create "myKey.pem" to your computer!!
+  provisioner "local-exec" {
     command = "echo '${tls_private_key.generated-ssh-key.private_key_pem}' > ./myKey.pem && chmod +400 ./myKey.pem"
   }
 }
